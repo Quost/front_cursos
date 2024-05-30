@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursos</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+
+<body class="background-primary text-white flex items-center justify-center min-h-screen">
+    <div class="text-center">
+        <h1 class="text-3xl font-bold mb-8 text-purple-500">Cursos</h1>
+        <table class="w-1/2 mx-auto table-auto border-collapse rounded-lg overflow-hidden">
+            <thead>
+                <tr class="brand-color">
+                    <th class="px-4 py-2 border border-primary">Curso</th>
+                    <th class="px-4 py-2 border border-primary">Categoria</th>
+                    <th class="px-4 py-2 border border-primary">Professor(a)</th>
+                    <th class="px-4 py-2 border border-primary">Ativo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border border-primary rounded-md" th:each="course: ${courses}">
+                    <td class="border border-primary hover:border-hover px-4 py-2" th:text="${course.name} != null ? ${course.name} : '-'"></td>
+                    <td class="border border-primary hover:border-hover px-4 py-2" th:text="${course.category} != null ? ${course.category} : '-'"></td>
+                    <td class="border border-primary hover:border-hover px-4 py-2" th:text="${course.teacher} != null ? ${course.teacher} : '-'"></td>
+                    <td class="border border-primary hover:border-hover px-4 py-2" th:text="${course.status} != null ? (${course.status} == 'ACTIVE' ? 'Sim' : 'Não') : '-'"></td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="mt-6 brand-color text-white font-bold py-2 px-4 rounded hover:brand-color-hover">
+            Novo curso
+        </button>
+    </div>
+</body>
+
+</html>
