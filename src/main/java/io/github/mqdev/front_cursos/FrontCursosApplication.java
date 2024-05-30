@@ -7,7 +7,21 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FrontCursosApplication {
 
 	public static void main(String[] args) {
+
+		if (isRunningLocally()) {
+			System.setProperty("host.api.gestao.cursos", "http://localhost:8080");
+		}
+
 		SpringApplication.run(FrontCursosApplication.class, args);
-	} 
+	}
+
+	private static boolean isRunningLocally() {
+		try {
+			String profile = System.getProperty("spring.profiles.active");
+			return profile == null || profile.equals("local");
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 }
