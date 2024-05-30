@@ -33,6 +33,7 @@ public class UserController {
             var roles = authInfo.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString().toUpperCase())).toList();
 
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, password, roles);
+            auth.setDetails(authInfo.getAccess_token());
 
             SecurityContextHolder.getContext().setAuthentication(auth);
             SecurityContext securityContext = SecurityContextHolder.getContext();
