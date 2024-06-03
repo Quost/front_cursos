@@ -5,14 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.github.mqdev.front_cursos.modules.course.dto.CourseDTO;
+import io.github.mqdev.front_cursos.modules.course.services.CreateCourseService;
 import io.github.mqdev.front_cursos.modules.course.services.GetCategoriesService;
 import io.github.mqdev.front_cursos.modules.course.services.GetCoursesService;
 import io.github.mqdev.front_cursos.utils.Auth;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -25,6 +28,9 @@ public class CourseController {
 
     @Autowired
     private GetCategoriesService getCategoriesService;
+
+    @Autowired
+    private CreateCourseService createCourseService;
 
     @GetMapping("/list")
     @PreAuthorize("hasRole('USER')")
@@ -46,4 +52,18 @@ public class CourseController {
         return "course/register";
     }
 
+    @PostMapping("/create")
+    public String createCourse(CourseDTO course, Model model) {
+        List<String> categories = getCategoriesService.execute(Auth.getToken());
+
+        try {
+            createCourseService.execute(Auth.getToken(), course);
+            return "redirect:/course/list";
+        } catch (Exception e) {
+            model.addAttribute("categories", categories);
+            model.addAttribute("error", e.getMessage());
+            System.out.println(e.getMessage());
+            return "course/register";
+        }
+    }
 }
