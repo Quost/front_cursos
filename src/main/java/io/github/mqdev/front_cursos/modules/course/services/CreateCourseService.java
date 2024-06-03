@@ -28,6 +28,12 @@ public class CreateCourseService {
             var request = new HttpEntity<>(course, headers);
 
             restTemplate.postForObject(url, request, CourseDTO.class);
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode().equals(HttpStatus.UNAUTHORIZED)) {
+                throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, "Token inválido");
+            }
+
+            throw new HttpClientErrorException(e.getStatusCode(), e.getResponseBodyAsString());
         } catch (Exception e) {
             e.printStackTrace();
             throw new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao criar curso");

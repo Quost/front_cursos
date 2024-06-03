@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import io.github.mqdev.front_cursos.modules.course.services.CreateCourseService;
 import io.github.mqdev.front_cursos.modules.course.services.GetCategoriesService;
 import io.github.mqdev.front_cursos.modules.course.services.GetCoursesService;
 import io.github.mqdev.front_cursos.utils.Auth;
-import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -49,6 +47,7 @@ public class CourseController {
     public String getCreateCoursePage(Model model) {
         List<String> categories = getCategoriesService.execute(Auth.getToken());
         model.addAttribute("categories", categories);
+        model.addAttribute("course", new CourseDTO());
         return "course/register";
     }
 
@@ -61,6 +60,7 @@ public class CourseController {
             return "redirect:/course/list";
         } catch (Exception e) {
             model.addAttribute("categories", categories);
+            model.addAttribute("course", course);
             model.addAttribute("error", e.getMessage());
             System.out.println(e.getMessage());
             return "course/register";
